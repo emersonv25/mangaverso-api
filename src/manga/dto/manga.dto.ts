@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator";
 import { PaginationDto } from "src/dto/pagination.dto";
+import { ChapterDto } from "../../chapter/dto/chapter.dto";
 
 export class MangaDto {
   @ApiProperty({
@@ -27,6 +28,34 @@ export class MangaDto {
   @IsNotEmpty()
   posterUrl: string;
 
+  @ApiProperty({
+    description: 'Released Date of the Manga',
+    example: '2023',
+  })
+  @IsString()
+  @IsNotEmpty()
+  releaseDate: string;
+
+  @ApiProperty({
+    description: 'list containing manga genres',
+    example: ['Shounen']
+  })
+  genres: string []
+
+  @ApiProperty({
+    description: 'MANGA, MANHWA, MANHUA, NOVEL or COMIC',
+    example: 'MANGA',
+  })
+  @IsString()
+  @IsOptional()
+  type: string
+
+  @ApiProperty({
+    description: 'List of Chapters',
+    type: () => [ChapterDto]
+  })
+  chapters : ChapterDto[]
+
 }
 
 export class MangaResponseDto extends MangaDto {
@@ -37,19 +66,18 @@ export class MangaResponseDto extends MangaDto {
   @IsNumber()
   @IsNotEmpty()
   id: number
+
+  createdAt: Date
+
+  modifiedAt: Date
+
+  viewsCount: number
+
 }
 
 export class MangaResponsePaginatedDto extends PaginationDto {
   @ApiProperty({
     description: 'Array of Manga Data',
-    example: [
-      {
-        "id": 1,
-        "title": "Um Manga Incrivel",
-        "description": "Uma descrição bem foda que resume o manga",
-        "posterUrl": "https://cdn.discordapp.com/attachments/347182996782055435/1153843819796762714/capa.jpg"
-      }
-    ],
   })
-  data : MangaResponseDto[]
+  data : any
 }

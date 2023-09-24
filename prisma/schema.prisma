@@ -13,7 +13,36 @@ datasource db {
 
 model Manga {
   id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
   title String
   description String
   posterUrl String
+  releaseDate String
+  viewsCount Int @default(0)
+  genres Genre[]
+  type String @default("MANGA") // MANGA, MANHWA, MANHUA, NOVEL, COMIC
+  chapters Chapter[]
+}
+
+model Genre {
+  id  Int @id @default (autoincrement())
+  mangas Manga[]
+  name String
+}
+
+model Chapter {
+  id  Int @id @default (autoincrement())
+  mangaId Int
+  manga Manga @relation(fields : [mangaId], references: [id])
+  chapterPages ChapterPage[]
+  chapterNumber String
+}
+
+model ChapterPage {
+  id  Int @id @default (autoincrement())
+  chapterId Int
+  chapter Chapter @relation(fields: [chapterId], references: [id])
+  imageUrl String
+  pageNumber Int
 }
