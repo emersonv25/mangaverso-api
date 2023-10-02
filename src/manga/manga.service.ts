@@ -13,7 +13,7 @@ export class MangaService {
         ) { }
 
     async getAllManga(): Promise<MangaResponsePaginatedDto> {
-        const result = await this.prisma.manga.findMany()
+        const result = await this.prisma.manga.findMany({include: { genres : true}})
 
         const response: MangaResponsePaginatedDto = {
             data: result,
@@ -26,7 +26,7 @@ export class MangaService {
     }
 
     async getManga(id: number): Promise<Manga> {
-        return this.prisma.manga.findUnique({ where: { id: Number(id) }, include: { chapters: true} })
+        return this.prisma.manga.findUnique({ where: { id: Number(id) }, include: { chapters: true, genres : true} })
     }
 
     async createManga(mangaDto: MangaDto): Promise<Manga> {

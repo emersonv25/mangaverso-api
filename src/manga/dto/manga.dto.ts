@@ -38,7 +38,7 @@ export class MangaDto {
 
   @ApiProperty({
     description: 'list containing manga genres',
-    example: ['Shounen']
+    example: ['Shounen', 'Seinen']
   })
   genres: string []
 
@@ -63,8 +63,6 @@ export class MangaResponseDto extends MangaDto {
     description: 'Id key of Manga',
     example: 123,
   })
-  @IsNumber()
-  @IsNotEmpty()
   id: number
 
   createdAt: Date

@@ -19,13 +19,15 @@ export class ChapterDto {
 
 export class ChapterPageDto {
     @ApiProperty({
-        description: 'Image Url of the Chapter'
+        description: 'Image Url of the Chapter',
+        example: 'https://img.lermanga.org/O/one-piece-colorido/capitulo-01/1.png'
     })
     @IsNotEmpty()
     imageUrl: string
 
     @ApiProperty({
-        description: 'Number position of the page'
+        description: 'Number position of the page',
+        example : 1
     })
     @IsNotEmpty()
     pageNumber: number

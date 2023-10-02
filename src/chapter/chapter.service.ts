@@ -6,24 +6,11 @@ import { PrismaService } from 'src/prisma.service.';
 export class ChapterService {
     constructor(private prisma: PrismaService) { }
 
-    async getAllChaptersOfManga(mangaId : number)
-    {
-        const result = await this.prisma.chapter.findMany({
-            where: {
-                mangaId : Number(mangaId)
-            }
-        })
-
-        return result;
-    }
-
 
     async getChapterPages(chapterId : number)
     {
         const result = await this.prisma.chapterPage.findMany({
-            where: {
-                chapterId : Number(chapterId)
-            }
+            where: { chapterId : Number(chapterId) }
         })
 
         return result;

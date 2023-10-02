@@ -8,15 +8,8 @@ import { ChapterDto } from 'src/chapter/dto/chapter.dto';
 export class ChapterController {
     constructor(private readonly chapterService: ChapterService){}
 
-    @Get(':mangaId')
-    @ApiOperation({ summary: `Endpoint to get all chapters of one manga.`, })
-    @ApiResponse({ status: 200, description: 'Success.' })
-    async getAllChaptersOfManga(@Param('mangaId') mangaId:number):Promise<any>{
-         return await  this.chapterService.getAllChaptersOfManga(mangaId)
-    }
-
     @Get('/pages/:chapterId')
-    @ApiOperation({ summary: `Endpoint to get chapter pages.`, })
+    @ApiOperation({ summary: `Endpoint to get all pages of a chapter.`, })
     @ApiResponse({ status: 200, description: 'Success.' })
     async getChapterPages(@Param('chapterId') chapterId:number):Promise<any>{
          return await  this.chapterService.getChapterPages(chapterId)
