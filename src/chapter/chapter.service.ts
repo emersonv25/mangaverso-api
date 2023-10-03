@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ChapterDto } from 'src/chapter/dto/chapter.dto';
+import { ChapterDto, ChapterPageResponseDto, ChapterResponseDto } from 'src/chapter/dto/chapter.dto';
 import { PrismaService } from 'src/prisma.service.';
 
 @Injectable()
@@ -7,18 +7,18 @@ export class ChapterService {
     constructor(private prisma: PrismaService) { }
 
 
-    async getChapterPages(chapterId : number)
+    async getChapterPages(chapterId : number) : Promise<ChapterPageResponseDto[]>
     {
-        const result = await this.prisma.chapterPage.findMany({
+        const result : ChapterPageResponseDto[] = await this.prisma.chapterPage.findMany({
             where: { chapterId : Number(chapterId) }
         })
 
         return result;
     }
 
-    async createChapter(mangaId: number, chapterDto : ChapterDto) {
+    async createChapter(mangaId: number, chapterDto : ChapterDto) :  Promise<ChapterResponseDto> {
 
-        const manga = await this.prisma.manga.findUnique({where:{id: mangaId}})
+        const manga = await this.prisma.manga.findUnique({where:{id: Number(mangaId)}})
 
         if (!manga) {
             throw new BadRequestException(`Manga with ID ${mangaId} not found.`);
@@ -30,14 +30,14 @@ export class ChapterService {
             throw new BadRequestException(`Chapter with Number ${chapterDto.chapterNumber} already exist.`)
         }
 
-        const createdChapter = await this.prisma.chapter.create({
+        const createdChapter : ChapterResponseDto = await this.prisma.chapter.create({
             data: {
                 mangaId: manga.id,
                 chapterNumber: chapterDto.chapterNumber,
                 chapterPages: {
                     create : chapterDto.chapterPages
                 }
-            },
+            }, include : { chapterPages: true},
         });
 
         return createdChapter;

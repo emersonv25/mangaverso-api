@@ -34,6 +34,8 @@ model Genre {
 
 model Chapter {
   id  Int @id @default (autoincrement())
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
   mangaId Int
   manga Manga @relation(fields : [mangaId], references: [id])
   chapterPages ChapterPage[]
@@ -43,6 +45,8 @@ model Chapter {
 model ChapterPage {
   id  Int @id @default (autoincrement())
   chapterId Int
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
   chapter Chapter @relation(fields: [chapterId], references: [id])
   imageUrl String
   pageNumber Int
