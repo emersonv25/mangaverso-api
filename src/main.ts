@@ -5,6 +5,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors();
+  
   const config = new DocumentBuilder()
     .setTitle('MangaVerso Api')
     .setDescription('The Manga Verso API description')
