@@ -24,7 +24,7 @@ export class ChapterService {
             throw new BadRequestException(`Manga with ID ${mangaId} not found.`);
         }
         
-        const chapterNumber = await this.prisma.chapter.findMany({where: {chapterNumber: chapterDto.chapterNumber}})
+        const chapterNumber = await this.prisma.chapter.findMany({where: {mangaId : manga.id, chapterNumber: chapterDto.chapterNumber}})
         if(chapterNumber.length > 0)
         {
             throw new BadRequestException(`Chapter with Number ${chapterDto.chapterNumber} already exist.`)

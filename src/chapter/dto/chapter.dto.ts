@@ -69,7 +69,7 @@ export class ChapterResponseDto {
         description: 'List of chapter pages',
         type: () => [ChapterPageResponseDto]
     })
-    chapterPages : ChapterPageResponseDto []
+    chapterPages? : ChapterPageResponseDto []
 }
 
 export class ChapterPageResponseDto {

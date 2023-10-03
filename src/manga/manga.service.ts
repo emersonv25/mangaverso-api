@@ -12,66 +12,30 @@ export class MangaService {
         private readonly chapterService: ChapterService
         ) { }
 
-    async getAllManga(): Promise<MangaResponsePaginatedDto> {
-        const result = await this.prisma.manga.findMany({include: { genres : true}})
+        async getAllManga(): Promise<MangaResponsePaginatedDto> {
+            const result : MangaResponseDto[] = await this.prisma.manga.findMany({ include: { genres: true } });
 
-        const mangasList: MangaResponseDto[] = result.map((manga) => ({
-            id: manga.id,
-            createdAt: manga.createdAt,
-            modifiedAt: manga.modifiedAt,
-            title: manga.title,
-            description: manga.description,
-            posterUrl: manga.posterUrl,
-            releaseDate: manga.releaseDate,
-            viewsCount: manga.viewsCount,
-            genres: manga.genres.map((genre) => genre.name),
-            type: manga.type,
-            chapters : null
-        }));
-
-        const response: MangaResponsePaginatedDto = {
-            data: mangasList,
-            totalPages: 1,
-            totalCount: 1,
-            currentPage: 1
+            const response: MangaResponsePaginatedDto = {
+                data: result,
+                totalPages: 1,
+                totalCount: 1,
+                currentPage: 1
+            };
+            return response;
         }
-        return response
-
-    }
+        
 
     async getManga(id: number): Promise<MangaResponseDto> {
-        const manga = await this.prisma.manga.findUnique({
+        const manga : MangaResponseDto = await this.prisma.manga.findUnique({
             where: { id: Number(id) },
             include: { chapters: true, genres: true },
-            
         });
     
         if (!manga) {
             throw new Error(`Manga with ID ${id} not found`);
         }
-    
-        const mangaResponse: MangaResponseDto = {
-            id: manga.id,
-            createdAt: manga.createdAt,
-            modifiedAt: manga.modifiedAt,
-            title: manga.title,
-            description: manga.description,
-            posterUrl: manga.posterUrl,
-            releaseDate: manga.releaseDate,
-            viewsCount: manga.viewsCount,
-            genres: manga.genres.map((genre) => genre.name),
-            type: manga.type,
-            chapters: manga.chapters.map((chapter) => ({
-                id: chapter.id,
-                createdAt: chapter.createdAt,
-                modifiedAt: chapter.modifiedAt,
-                mangaId: chapter.mangaId,
-                chapterNumber: chapter.chapterNumber,
-                chapterPages : null
-            })),
-        };
-    
-        return mangaResponse;
+
+        return manga;
     }
 
     async createManga(mangaDto: MangaDto): Promise<Manga> {

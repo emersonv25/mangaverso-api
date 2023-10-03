@@ -110,9 +110,9 @@ export class MangaResponseDto {
 
   @ApiProperty({
     description: 'list containing manga genres',
-    example: ['Shounen', 'Seinen']
+    type: () => [GenresDto]
   })
-  genres: string[]
+  genres: GenresDto[]
 
   @ApiProperty({
     description: 'MANGA, MANHWA, MANHUA, NOVEL or COMIC',
@@ -132,7 +132,7 @@ export class MangaResponseDto {
     description: 'List of chapters',
     type: () => [ChapterResponseDto],
   })
-  chapters: ChapterResponseDto[];
+  chapters?: ChapterResponseDto[];
 
 }
 
@@ -142,4 +142,17 @@ export class MangaResponsePaginatedDto extends PaginationDto {
     type: () => [MangaResponseDto]
   })
   data: MangaResponseDto[]
+}
+
+export class GenresDto { 
+  @ApiProperty({
+    description: 'Id',
+    example: 1,
+  })
+  id: number
+  @ApiProperty({
+    description: 'Name of Genrer',
+    example: 'SEINEN',
+  })
+  name: string
 }
