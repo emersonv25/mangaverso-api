@@ -10,27 +10,43 @@ export class MangaService {
     constructor(
         private prisma: PrismaService,
         private readonly chapterService: ChapterService
-        ) { }
+    ) { }
 
-        async getAllManga(): Promise<MangaResponsePaginatedDto> {
-            const result : MangaResponseDto[] = await this.prisma.manga.findMany({ include: { genres: true } });
+    async getAllManga(pageNumber: number, pageSize: number, search?: string): Promise<MangaResponsePaginatedDto> {
+        const result : MangaResponseDto[] = await this.prisma.manga.findMany({
+            include: {
+                genres: true
+            },
+            skip: (pageNumber - 1) * pageSize,
+            take: pageSize,
+            where: {
+                OR: [
+                    { title: { contains: search } },
+                    { description: { contains: search } },
+                    { genres: { some: { name: { contains: search } } } }
+                ]
+            }
+        });
 
-            const response: MangaResponsePaginatedDto = {
-                data: result,
-                totalPages: 1,
-                totalCount: 1,
-                currentPage: 1
-            };
-            return response;
-        }
-        
+        const totalCount = await this.prisma.manga.count();
+        const totalPages = Math.ceil(totalCount / pageSize);
+
+        const response: MangaResponsePaginatedDto = {
+            data: result,
+            totalPages: totalPages,
+            totalCount: totalCount,
+            currentPage: pageNumber
+        };
+        return response;
+    }
+
 
     async getManga(id: number): Promise<MangaResponseDto> {
-        const manga : MangaResponseDto = await this.prisma.manga.findUnique({
+        const manga: MangaResponseDto = await this.prisma.manga.findUnique({
             where: { id: Number(id) },
             include: { chapters: true, genres: true },
         });
-    
+
         if (!manga) {
             throw new Error(`Manga with ID ${id} not found`);
         }
@@ -40,11 +56,11 @@ export class MangaService {
 
     async createManga(mangaDto: MangaDto): Promise<Manga> {
 
-       const genresName = mangaDto.genres.map(i => i.toUpperCase());
+        const genresName = mangaDto.genres.map(i => i.toUpperCase());
 
         const existingGenres = await this.prisma.genre.findMany({
             where: {
-                name: { in : genresName}
+                name: { in: genresName }
             },
         });
 
@@ -62,7 +78,7 @@ export class MangaService {
         }
 
         const allGenres = [...existingGenres, ...createdGenres];
-        
+
         const manga = await this.prisma.manga.create({
             data: {
                 title: mangaDto.title,
