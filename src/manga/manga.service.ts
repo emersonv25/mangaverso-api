@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { Manga } from "@prisma/client";
 import { PrismaService } from "src/prisma.service.";
-import { MangaDto, MangaResponseDto, MangaResponsePaginatedDto } from "./dto/manga.dto";
+import { MangaDto, MangaResponseDto } from "./dto/manga.dto";
 import { ChapterService } from "src/chapter/chapter.service";
+import { PaginationDto } from "src/dto/pagination.dto";
 
 @Injectable()
 export class MangaService {
@@ -12,7 +13,7 @@ export class MangaService {
         private readonly chapterService: ChapterService
     ) { }
 
-    async getAllManga(pageNumber: number, pageSize: number, search?: string): Promise<MangaResponsePaginatedDto> {
+    async getAllManga(pageNumber: number, pageSize: number, search?: string): Promise<PaginationDto<MangaResponseDto[]>> {
         const result : MangaResponseDto[] = await this.prisma.manga.findMany({
             include: {
                 genres: true
@@ -31,7 +32,7 @@ export class MangaService {
         const totalCount = await this.prisma.manga.count();
         const totalPages = Math.ceil(totalCount / pageSize);
 
-        const response: MangaResponsePaginatedDto = {
+        const response: PaginationDto<MangaResponseDto[]> = {
             data: result,
             totalPages: totalPages,
             totalCount: totalCount,

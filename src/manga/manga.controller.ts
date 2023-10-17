@@ -2,7 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Res, Versi
 import { MangaService } from "./manga.service";
 import { Request, Response } from "express";
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { MangaDto, MangaResponseDto, MangaResponsePaginatedDto } from "./dto/manga.dto";
+import { MangaDto, MangaResponseDto } from "./dto/manga.dto";
+import { PaginationDto } from "src/dto/pagination.dto";
 
 @ApiTags('Manga')
 @Controller('api/v1/manga')
@@ -15,8 +16,8 @@ export class MangaController {
      @ApiQuery({ name: 'pageNumber', required: false, type: Number })
      @ApiQuery({ name: 'pageSize', required: false, type: Number })
      @ApiQuery({ name: 'search', required: false, type: String })
-     @ApiResponse({ status: 200, type: MangaResponsePaginatedDto, description: 'Success.' })
-     async getAllManga(@Req() request: Request, @Query('pageNumber') pageNumber?: number, @Query('pageSize') pageSize?: number, @Query('search') search?: string): Promise<MangaResponsePaginatedDto> {
+     @ApiResponse({ status: 200, type: PaginationDto<MangaResponseDto[]>, description: 'Success.' })
+     async getAllManga(@Req() request: Request, @Query('pageNumber') pageNumber?: number, @Query('pageSize') pageSize?: number, @Query('search') search?: string): Promise<PaginationDto<MangaResponseDto[]>> {
           pageNumber = pageNumber || 1;
           pageSize = pageSize || 10;
           return await this.mangaService.getAllManga(pageNumber, pageSize, search);

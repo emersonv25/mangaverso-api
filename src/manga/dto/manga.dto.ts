@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator";
-import { PaginationDto } from "src/dto/pagination.dto";
 import { ChapterDto, ChapterResponseDto } from "../../chapter/dto/chapter.dto";
 
 export class MangaDto {
@@ -136,13 +135,6 @@ export class MangaResponseDto {
 
 }
 
-export class MangaResponsePaginatedDto extends PaginationDto {
-  @ApiProperty({
-    description: 'Array of Manga Data',
-    type: () => [MangaResponseDto]
-  })
-  data: MangaResponseDto[]
-}
 
 export class GenresDto { 
   @ApiProperty({

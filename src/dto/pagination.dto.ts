@@ -1,7 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, Min } from "class-validator";
 
-export class PaginationDto {
+export class PaginationDto<T> {
+    data : T
+
     @ApiProperty({
         description: 'Current page number',
         example: 1,
