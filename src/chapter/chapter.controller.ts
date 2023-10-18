@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChapterService } from './chapter.service';
-import { ChapterDto, ChapterPageResponseDto, ChapterResponseDto } from 'src/chapter/dto/chapter.dto';
-import { MangaResponseDto } from 'src/manga/dto/manga.dto';
+import { ChapterDto, ChapterPageResponseDto, ChapterResponseDto } from './dto/chapter.dto';
 
 @ApiTags('Chapter')
 @Controller('chapter')

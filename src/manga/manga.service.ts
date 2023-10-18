@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { Manga } from "@prisma/client";
-import { PrismaService } from "src/prisma.service.";
 import { MangaDto, MangaResponseDto } from "./dto/manga.dto";
-import { ChapterService } from "src/chapter/chapter.service";
-import { PaginationDto } from "src/dto/pagination.dto";
+import { ChapterService } from "../chapter/chapter.service";
+import { PrismaService } from "../prisma.service.";
+import { PaginationDto } from "../dto/pagination.dto";
 
 @Injectable()
 export class MangaService {

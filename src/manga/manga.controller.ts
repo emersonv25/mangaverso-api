@@ -3,7 +3,7 @@ import { MangaService } from "./manga.service";
 import { Request, Response } from "express";
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { MangaDto, MangaResponseDto } from "./dto/manga.dto";
-import { PaginationDto } from "src/dto/pagination.dto";
+import { PaginationDto } from "../dto/pagination.dto";
 
 @ApiTags('Manga')
 @Controller('api/v1/manga')

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ChapterDto, ChapterPageResponseDto, ChapterResponseDto } from 'src/chapter/dto/chapter.dto';
-import { PrismaService } from 'src/prisma.service.';
+import { ChapterDto, ChapterPageResponseDto, ChapterResponseDto } from '../chapter/dto/chapter.dto';
+import { PrismaService } from '../prisma.service.';
 
 @Injectable()
 export class ChapterService {
